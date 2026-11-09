@@ -1,1186 +1,284 @@
-<!DOCTYPE html>
-<html lang="zh-TW">
+<!doctype html>
+<html lang="zh-Hant-TW">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>泡泡臉八德館｜AI肌膚檢測</title>
-  <meta name="description" content="泡泡臉八德館｜AI肌膚檢測。約30分鐘檢測＋白話解讀，先了解膚況再決定下一步。不硬推，先講清楚。加入官方LINE立即預約或先詢問。" />
-
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="泡泡臉八德館 AI 肌膚檢測。約 30 分鐘完成檢測與白話解讀，透過官方 LINE 預約或詢問。">
+  <link rel="canonical" href="https://ai.bubblan.tw/">
+  <title>泡泡臉八德館｜AI 肌膚檢測</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700;800;900&display=swap">
   <style>
-    :root{
-      --bg:#f7f6fb;
-      --text:#1f2430;
-      --muted:#5b6170;
-
-      --brand:#7b5bb3;
-      --brand2:#c7b3ee;
-      --line:#06C755;
-
-      --shadow: 0 10px 28px rgba(31,36,48,.10);
-      --shadow2: 0 14px 40px rgba(31,36,48,.14);
-      --radius: 18px;
-      --max: 1120px;
-
-      --glass-border: 1px solid rgba(123,91,179,.16);
-      --glass-border-2: 1px solid rgba(31,36,48,.08);
-    }
-
-    *{ box-sizing:border-box; }
-    html,body{ margin:0; padding:0; }
-    body{
-      font-family: "Microsoft JhengHei", system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
-      background:
-        radial-gradient(1000px 620px at 18% -10%, rgba(123,91,179,.20), transparent 60%),
-        radial-gradient(900px 560px at 92% 0%, rgba(199,179,238,.22), transparent 55%),
-        radial-gradient(900px 620px at 50% 110%, rgba(123,91,179,.10), transparent 55%),
-        var(--bg);
-      color: var(--text);
-      line-height: 1.65;
-    }
-    img{ max-width:100%; display:block; }
-    a{ color:inherit; }
-    .wrap{ width:min(var(--max), 92vw); margin:0 auto; }
-
-    .topbar{
-      position: sticky;
-      top:0;
-      z-index: 50;
-      background: rgba(255,255,255,.72);
-      backdrop-filter: blur(18px);
-      border-bottom: 1px solid rgba(123,91,179,.14);
-    }
-    .topbar-inner{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      padding: 12px 0;
-      gap: 12px;
-    }
-    .brand{
-      display:flex;
-      align-items:center;
-      gap: 10px;
-      min-width: 180px;
-    }
-    .brand img{
-      height:44px;
-      width:auto;
-      filter: drop-shadow(0 10px 22px rgba(31,36,48,.18));
-    }
-    .nav{
-      display:flex;
-      gap: 12px;
-      align-items:center;
-      flex-wrap:wrap;
-      justify-content:flex-end;
-    }
-    .nav a{
-      text-decoration:none;
-      color: rgba(31,36,48,.82);
-      font-size: 14px;
-      padding: 8px 10px;
-      border-radius: 10px;
-      transition: .18s ease;
-    }
-    .nav a:hover{ background: rgba(123,91,179,.10); }
-    @media (max-width: 900px){ .nav{ display:none; } }
-
-    .btn{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      gap: 10px;
-      border:0;
-      cursor:pointer;
-      text-decoration:none;
-      border-radius: 999px;
-      padding: 14px 18px;
-      font-weight: 1000;
-      transition: .18s ease;
-      white-space:nowrap;
-      user-select:none;
-    }
-    .btn-primary{
-      background: linear-gradient(135deg, rgba(123,91,179,.95), rgba(199,179,238,.95));
-      color: #150b22;
-      box-shadow: var(--shadow);
-    }
-    .btn-primary:hover{ transform: translateY(-1px); box-shadow: var(--shadow2); }
-    .btn-line{
-      background: var(--line);
-      color:#0b1b10;
-      box-shadow: var(--shadow);
-      font-weight: 1100;
-    }
-    .btn-line:hover{ transform: translateY(-1px); box-shadow: var(--shadow2); }
-    .ghost{
-      background: rgba(255,255,255,.55);
-      color: var(--text);
-      border: 1px solid rgba(123,91,179,.18);
-      backdrop-filter: blur(10px);
-    }
-    .ghost:hover{ background: rgba(255,255,255,.70); }
-
-    .hero{ padding: 36px 0 12px; }
-    .hero-grid{
-      display:grid;
-      grid-template-columns: 1.15fr .85fr;
-      gap: 22px;
-      align-items:stretch;
-    }
-    @media (max-width: 900px){
-      .hero-grid{ grid-template-columns: 1fr; }
-    }
-
-    .glass{
-      border-radius: var(--radius);
-      background: linear-gradient(180deg, rgba(255,255,255,.72), rgba(255,255,255,.45));
-      border: var(--glass-border);
-      box-shadow: var(--shadow);
-      overflow:hidden;
-      position:relative;
-    }
-    .glass::before{
-      content:"";
-      position:absolute;
-      inset:-2px;
-      background:
-        radial-gradient(600px 240px at 15% 10%, rgba(123,91,179,.18), transparent 60%),
-        radial-gradient(420px 220px at 90% 0%, rgba(199,179,238,.20), transparent 55%);
-      pointer-events:none;
-      opacity:.85;
-    }
-    .glass > *{ position:relative; }
-
-    .hero-left{
-      padding: 26px;
-      min-height: 480px;
-      display:flex;
-      flex-direction:column;
-      justify-content:space-between;
-      gap: 18px;
-    }
-
-    .kicker{
-      display:inline-flex;
-      align-items:center;
-      gap: 10px;
-      font-size: 13px;
-      color: rgba(31,36,48,.72);
-      flex-wrap:wrap;
-    }
-    .dot{
-      width:10px; height:10px; border-radius:50%;
-      background: var(--brand2);
-      box-shadow: 0 0 0 6px rgba(199,179,238,.28);
-    }
-    .pill{
-      display:inline-flex;
-      align-items:center;
-      gap: 8px;
-      padding: 6px 10px;
-      border-radius: 999px;
-      background: rgba(255,255,255,.62);
-      border: 1px solid rgba(123,91,179,.16);
-      color: rgba(31,36,48,.78);
-      font-size: 12px;
-      font-weight: 1000;
-    }
-    h1{
-      margin: 10px 0 10px;
-      font-size: clamp(30px, 3.4vw, 46px);
-      line-height: 1.15;
-      letter-spacing: .2px;
-      color: rgba(31,36,48,.96);
-    }
-    .lead{
-      margin: 0;
-      color: rgba(31,36,48,.78);
-      font-size: 16px;
-      max-width: 62ch;
-    }
-
-    .micro{
-      margin-top: 12px;
-      padding: 12px 14px;
-      border-radius: var(--radius);
-      background: rgba(255,255,255,.60);
-      border: 1px solid rgba(123,91,179,.16);
-      color: rgba(31,36,48,.78);
-      font-size: 14px;
-      box-shadow: 0 10px 26px rgba(31,36,48,.08);
-    }
-    .micro b{ color: rgba(31,36,48,.92); }
-    .micro code{
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-      background: rgba(123,91,179,.10);
-      border: 1px solid rgba(123,91,179,.14);
-      padding: 2px 6px;
-      border-radius: 8px;
-      font-weight: 900;
-      color: rgba(31,36,48,.90);
-    }
-
-    .hero-actions{
-      display:flex;
-      gap: 10px;
-      flex-wrap:wrap;
-      align-items:center;
-      margin-top: 10px;
-    }
-
-    .badges{
-      display:flex;
-      gap: 10px;
-      flex-wrap:wrap;
-      margin-top: 10px;
-    }
-    .badge{
-      font-size: 12px;
-      color: rgba(31,36,48,.78);
-      background: rgba(255,255,255,.60);
-      border: 1px solid rgba(123,91,179,.16);
-      padding: 8px 10px;
-      border-radius: 999px;
-      font-weight: 1000;
-    }
-
-    .stack{ display:grid; gap: 12px; }
-
-    .mini{
-      padding: 14px;
-      border-radius: var(--radius);
-      background: linear-gradient(180deg, rgba(255,255,255,.70), rgba(255,255,255,.50));
-      border: var(--glass-border-2);
-      box-shadow: 0 10px 26px rgba(31,36,48,.08);
-    }
-    .mini strong{ display:block; margin-bottom: 4px; color: rgba(31,36,48,.90); }
-    .mini span{ color: rgba(31,36,48,.72); font-size: 14px; }
-
-    .media{
-      border-radius: var(--radius);
-      overflow:hidden;
-      border: var(--glass-border);
-      background: rgba(255,255,255,.55);
-      box-shadow: var(--shadow);
-      position:relative;
-    }
-    .media::after{
-      content:"";
-      position:absolute;
-      inset:0;
-      background: linear-gradient(180deg, rgba(123,91,179,.06), rgba(255,255,255,0));
-      pointer-events:none;
-    }
-    .media-box{
-      width:100%;
-      aspect-ratio: 4 / 3;
-      overflow:hidden;
-      position:relative;
-    }
-    .media-box img{
-      width:100%;
-      height:100%;
-      object-fit: cover;
-      object-position: center;
-      transform: scale(1.02);
-    }
-
-    /* ai-service 自動比例模式 */
-    .media-box.service-portrait{
-      aspect-ratio: 9 / 16;
-      background: rgba(255,255,255,.7);
-    }
-    .media-box.service-portrait img{
-      object-fit: contain;
-      object-position: center top;
-      transform: none;
-    }
-
-    .media-box.service-landscape{
-      aspect-ratio: 4 / 3;
-    }
-    .media-box.service-landscape img{
-      object-fit: cover;
-      object-position: center;
-      transform: scale(1.02);
-    }
-
-    section{ padding: 42px 0; }
-    .section-title{
-      display:flex;
-      align-items:flex-end;
-      justify-content:space-between;
-      gap: 14px;
-      margin-bottom: 18px;
-    }
-    .section-title h2{
-      margin:0;
-      font-size: 24px;
-      letter-spacing:.2px;
-      color: rgba(31,36,48,.95);
-    }
-    .section-title p{
-      margin:0;
-      color: rgba(31,36,48,.68);
-      font-size: 14px;
-      max-width: 70ch;
-    }
-
-    .card{
-      background: linear-gradient(180deg, rgba(255,255,255,.70), rgba(255,255,255,.48));
-      border: var(--glass-border);
-      border-top: 1px solid rgba(255,255,255,.75);
-      border-left: 1px solid rgba(255,255,255,.55);
-      border-right: 1px solid rgba(31,36,48,.06);
-      border-bottom: 1px solid rgba(31,36,48,.08);
-      border-radius: var(--radius);
-      padding: 18px;
-      box-shadow: var(--shadow);
-    }
-    .card h3{ margin: 0 0 8px; font-size: 18px; color: rgba(31,36,48,.92); }
-    .card p{ margin:0; color: rgba(31,36,48,.70); font-size: 14px; }
-
-    .split{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-      align-items:stretch;
-    }
-    @media (max-width: 900px){ .split{ grid-template-columns: 1fr; } }
-
-    .steps{ display:grid; gap: 12px; }
-    .step{
-      display:flex;
-      gap: 12px;
-      padding: 14px;
-      border-radius: var(--radius);
-      background: linear-gradient(180deg, rgba(255,255,255,.68), rgba(255,255,255,.48));
-      border: var(--glass-border-2);
-      box-shadow: 0 10px 26px rgba(31,36,48,.08);
-    }
-    .num{
-      width: 34px;
-      height: 34px;
-      border-radius: 12px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      background: rgba(123,91,179,.14);
-      border: 1px solid rgba(123,91,179,.22);
-      font-weight: 1100;
-      color: rgba(31,36,48,.90);
-      flex: 0 0 auto;
-      user-select:none;
-    }
-    .step strong{ display:block; margin-bottom: 4px; color: rgba(31,36,48,.92); }
-    .step span{ color: rgba(31,36,48,.72); font-size: 14px; }
-
-    .chips{ display:flex; flex-wrap:wrap; gap: 8px; margin-top: 10px; }
-    .chip{
-      display:inline-flex;
-      align-items:center;
-      gap: 6px;
-      padding: 8px 12px;
-      border-radius: 999px;
-      background: rgba(255,255,255,.65);
-      border: 1px solid rgba(123,91,179,.18);
-      color: rgba(31,36,48,.80);
-      font-size: 13px;
-      font-weight: 1100;
-      cursor:pointer;
-      transition: .15s ease;
-      user-select:none;
-    }
-    .chip:hover{ transform: translateY(-1px); }
-    .chip.active{
-      background: rgba(123,91,179,.12);
-      border-color: rgba(123,91,179,.32);
-    }
-    .chip i{
-      width:8px; height:8px; border-radius:999px;
-      background: rgba(123,91,179,.55);
-      display:inline-block;
-      box-shadow: 0 0 0 5px rgba(199,179,238,.26);
-    }
-
-    .panel{
-      padding: 18px;
-      border-radius: var(--radius);
-      background: linear-gradient(180deg, rgba(255,255,255,.72), rgba(255,255,255,.50));
-      border: var(--glass-border);
-      box-shadow: var(--shadow);
-    }
-    .panel-head{
-      display:flex;
-      align-items:flex-end;
-      justify-content:space-between;
-      gap: 12px;
-      flex-wrap:wrap;
-      margin-bottom: 12px;
-    }
-    .panel-head h3{ margin:0; font-size: 18px; color: rgba(31,36,48,.92); }
-    .panel-head p{ margin:0; color: rgba(31,36,48,.68); font-size: 13px; max-width: 70ch; }
-
-    .knowledge-box{
-      margin-top: 14px;
-      padding: 14px;
-      border-radius: 16px;
-      background: rgba(255,255,255,.62);
-      border: 1px solid rgba(123,91,179,.16);
-      box-shadow: 0 10px 24px rgba(31,36,48,.06);
-    }
-    .knowledge-box h4{
-      margin:0 0 8px;
-      font-size: 16px;
-      color: rgba(31,36,48,.92);
-    }
-    .knowledge-box p{
-      margin:0;
-      color: rgba(31,36,48,.74);
-      font-size: 14px;
-    }
-
-    .img-caption{
-      margin-top: 10px;
-      color: rgba(31,36,48,.70);
-      font-size: 14px;
-    }
-
-    .faq{ display:grid; gap: 10px; }
-    details{
-      background: linear-gradient(180deg, rgba(255,255,255,.70), rgba(255,255,255,.50));
-      border: var(--glass-border-2);
-      border-radius: var(--radius);
-      padding: 12px 14px;
-      box-shadow: 0 10px 26px rgba(31,36,48,.08);
-    }
-    summary{
-      cursor:pointer;
-      font-weight: 1100;
-      list-style:none;
-      outline:none;
-      color: rgba(31,36,48,.92);
-    }
-    summary::-webkit-details-marker{ display:none; }
-    details p{ margin: 10px 0 0; color: rgba(31,36,48,.72); font-size: 14px; }
-
-    .callout{
-      padding: 14px;
-      border-radius: var(--radius);
-      background: linear-gradient(180deg, rgba(255,255,255,.72), rgba(255,255,255,.50));
-      border: 1px solid rgba(123,91,179,.18);
-      box-shadow: 0 10px 26px rgba(31,36,48,.08);
-      color: rgba(31,36,48,.78);
-      font-size: 14px;
-    }
-    .callout b{ color: rgba(31,36,48,.92); }
-
-    .contact-card{
-      display:grid;
-      grid-template-columns: 1.1fr .9fr;
-      gap: 14px;
-    }
-    @media (max-width: 900px){ .contact-card{ grid-template-columns: 1fr; } }
-    .contact-left, .contact-right{
-      padding: 18px;
-      border-radius: var(--radius);
-      background: linear-gradient(180deg, rgba(255,255,255,.70), rgba(255,255,255,.50));
-      border: var(--glass-border);
-      box-shadow: var(--shadow);
-    }
-    .kv{
-      display:grid;
-      gap: 8px;
-      margin: 12px 0 0;
-      color: rgba(31,36,48,.78);
-      font-size: 14px;
-    }
-    .kv div{ display:flex; gap: 10px; align-items:flex-start; }
-    .kv i{ opacity:.85; font-style: normal; }
-    .hint{ color: rgba(31,36,48,.64); font-size: 13px; margin:10px 0 0; }
-
-    .social{
-      display:grid;
-      gap: 12px;
-      margin-top: 10px;
-    }
-    .social a{
-      text-decoration:none;
-    }
-    .btn-fb{
-      background: rgba(255,255,255,.60);
-      border: 1px solid rgba(66, 103, 178, .28);
-      color: rgba(31,36,48,.92);
-      box-shadow: 0 10px 26px rgba(31,36,48,.08);
-    }
-    .btn-fb:hover{ transform: translateY(-1px); box-shadow: var(--shadow2); }
-    .btn-ig{
-      background: rgba(255,255,255,.60);
-      border: 1px solid rgba(193, 53, 132, .22);
-      color: rgba(31,36,48,.92);
-      box-shadow: 0 10px 26px rgba(31,36,48,.08);
-    }
-    .btn-ig:hover{ transform: translateY(-1px); box-shadow: var(--shadow2); }
-
-    .float-line{
-      position: fixed;
-      right: 16px;
-      bottom: 16px;
-      z-index: 60;
-      display:flex;
-      flex-direction:column;
-      gap: 10px;
-      align-items:flex-end;
-    }
-    .float-pill{
-      display:inline-flex;
-      gap: 10px;
-      align-items:center;
-      padding: 12px 14px;
-      border-radius: 999px;
-      background: rgba(6,199,85,.96);
-      color:#0b1b10;
-      font-weight: 1100;
-      text-decoration:none;
-      box-shadow: 0 14px 34px rgba(31,36,48,.20);
-      border: 1px solid rgba(255,255,255,.60);
-    }
-    .float-pill small{
-      display:block;
-      font-weight: 900;
-      opacity:.85;
-      font-size: 12px;
-      margin-top: 2px;
-    }
-
-    footer{
-      padding: 28px 0 56px;
-      border-top: 1px solid rgba(123,91,179,.14);
-      color: rgba(31,36,48,.62);
-      font-size: 13px;
-    }
-    .muted{ color: rgba(31,36,48,.66); }
-
-    @media (prefers-reduced-motion: reduce){
-      *{ transition:none !important; scroll-behavior:auto !important; }
-    }
+    :root{--brand:#7458a6;--deep:#503674;--soft:#f8f4fb;--tint:#f1e9f7;--line:#e9e1ef;--ink:#2c2831;--muted:#635b6b;--shadow:0 18px 44px #563a6e16}
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth;scroll-padding-top:86px}
+    body{margin:0;color:var(--ink);background:#fff;font-family:"Noto Sans TC","Microsoft JhengHei",sans-serif;line-height:1.75}
+    a{color:inherit;text-decoration:none}
+    button{font:inherit}
+    img{display:block;max-width:100%}
+    p,h1,h2,h3,figure{margin:0}
+    h1,h2,h3{line-height:1.25;font-weight:900}
+    h1{font-size:clamp(2.65rem,5.2vw,4.75rem);letter-spacing:-.055em}
+    h1 span{display:block;color:var(--deep);font-size:.68em;margin-top:12px;letter-spacing:-.035em}
+    h2{font-size:clamp(1.85rem,3.6vw,3rem);letter-spacing:-.045em}
+    h3{font-size:1.25rem}
+    .wrap{width:min(1180px,calc(100% - 48px));margin-inline:auto}
+    .mast{position:sticky;top:0;z-index:10;background:#fffffff2;border-bottom:1px solid var(--line);backdrop-filter:blur(12px)}
+    .nav{min-height:74px;display:flex;align-items:center;justify-content:space-between;gap:18px}
+    .brand{display:flex;align-items:center;gap:9px;color:var(--brand);font-weight:900;white-space:nowrap}
+    .brand img{width:46px;height:46px;object-fit:contain}
+    .navlinks,.actions{display:flex;align-items:center;flex-wrap:wrap;gap:12px}
+    .navlinks{gap:22px;font-weight:700;font-size:.9rem}
+    .btn{display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:10px 20px;border-radius:999px;border:1px solid transparent;background:var(--brand);color:#fff;font-weight:800;font-size:.93rem}
+    .btn:hover{background:var(--deep)}
+    .btn.outline{background:#fff;color:var(--deep);border-color:#dcceea}
+    .btn.outline:hover{background:var(--soft)}
+    :focus-visible{outline:2px solid var(--deep);outline-offset:4px}
+    .hero{background:linear-gradient(135deg,#fff 0%,#fbf9fd 58%,#f1e7f7 100%);padding:64px 0 74px}
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(30px,6vw,82px);align-items:center}
+    .eyebrow{color:var(--brand);font-weight:900;font-size:.84rem;letter-spacing:.095em;margin-bottom:12px}
+    .lead{color:var(--muted);margin-top:16px;max-width:38em}
+    .hero .lead{font-size:1.1rem;max-width:29em}
+    .price{display:flex;align-items:baseline;gap:10px 20px;flex-wrap:wrap;margin:26px 0;color:var(--deep);font-size:.9rem}
+    .price strong{font-size:1.42rem}
+    .hero figure{padding:16px 20px 12px;background:#fff;border:1px solid var(--line);border-radius:30px;box-shadow:var(--shadow)}
+    .hero figure img{margin:auto;width:100%;height:clamp(265px,34vw,395px);object-fit:contain}
+    figcaption{color:var(--muted);font-size:.83rem;padding:10px 0 3px;text-align:center}
+    .band{padding:76px 0}
+    .tinted{background:var(--soft)}
+    .steps{list-style:none;margin:24px 0 0;padding:0;border-top:1px solid var(--line)}
+    .steps li{display:grid;grid-template-columns:38px 1fr;gap:12px;border-bottom:1px solid var(--line);padding:13px 0}
+    .steps b{color:var(--brand)}
+    .steps strong,.steps span{display:block}
+    .steps span{color:var(--muted);font-size:.92rem}
+    .service img{max-height:460px;width:auto;height:auto;margin:auto;border-radius:20px;object-fit:contain}
+    .owner img{width:min(100%,395px);height:auto;margin:auto;border-radius:24px}
+    .section-heading{margin-bottom:28px}
+    .metric-buttons{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:8px;margin:0 0 16px}
+    .metric-buttons button{min-height:48px;padding:6px 2px;border:1px solid var(--line);border-radius:13px;background:#fff;color:var(--deep);font-weight:800;cursor:pointer}
+    .metric-buttons button[aria-pressed="true"]{background:var(--brand);color:#fff;border-color:var(--brand)}
+    .metric-buttons button:hover:not([aria-pressed="true"]){background:var(--tint)}
+    .metric-panel{display:grid;grid-template-columns:.95fr 1.05fr;align-items:stretch;border-radius:25px;border:1px solid var(--line);background:#fff;overflow:hidden}
+    .metric-panel figure{background:#efe7f5;padding:18px;display:grid;justify-items:center;align-content:center}
+    .metric-panel img{width:auto;height:350px;max-width:100%;object-fit:contain;border-radius:10px}
+    .metric-copy{align-self:center;padding:clamp(24px,5vw,60px)}
+    .metric-copy h3{font-size:clamp(1.8rem,3vw,2.6rem)}
+    .paths{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .path{padding:26px;border-radius:22px;border:1px solid var(--line);background:#fff}
+    .path ul{margin:12px 0 0;padding-left:1.25em;color:var(--muted)}
+    .path li+li{margin-top:5px}
+    .path .btn{margin-top:18px}
+    .qualification{display:inline-block;border-radius:999px;background:#fff;border:1px solid var(--line);padding:6px 14px;margin-top:18px;font-size:.88rem;color:var(--deep);font-weight:800}
+    .faq-layout{display:grid;grid-template-columns:.65fr 1.35fr;gap:38px}
+    details{border-bottom:1px solid var(--line)}
+    details:first-child{border-top:1px solid var(--line)}
+    summary{position:relative;list-style:none;padding:17px 40px 17px 0;font-weight:800;cursor:pointer}
+    summary::-webkit-details-marker{display:none}
+    summary::after{content:"+";position:absolute;right:8px;top:13px;color:var(--brand);font-size:1.25rem}
+    details[open] summary::after{content:"−"}
+    details p{padding:0 24px 16px 0;color:var(--muted)}
+    .booking{align-items:stretch;gap:18px}
+    .booking-intro,.visit{padding:clamp(24px,3.4vw,34px);border:1px solid var(--line);border-radius:30px}
+    .booking-intro{background:var(--tint);display:flex;flex-direction:column;justify-content:center}
+    .booking .actions{margin-top:20px}
+    .visit{background:#fff;box-shadow:var(--shadow)}
+    .visit-list{display:grid;gap:12px;margin:22px 0 0}
+    .visit-row{display:grid;grid-template-columns:4.5em minmax(0,1fr);gap:12px}
+    .visit-row dt{color:var(--brand);font-weight:800}
+    .visit-row dd{margin:0}
+    .visit-row dd a:hover{text-decoration:underline}
+    .foot{border-top:1px solid var(--line);padding:18px 0 88px;color:var(--muted);font-size:.85rem}
+    .foot .info-note{margin-top:10px}
+    .line-float{position:fixed;z-index:80;right:22px;bottom:22px;display:flex;align-items:center;gap:10px;padding:11px 16px 11px 11px;border-radius:999px;background:#fff;color:#43364d;box-shadow:0 12px 34px rgba(51,39,59,.2);border:1px solid #dcceea;font-weight:900}
+    .line-float .bubble{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;background:#06c755;color:#fff;font-size:.72rem}
+    .line-float small{display:block;font-weight:600;color:#807786;line-height:1.15}
+    .mobile-nav{display:none}
+    @media(max-width:880px){
+      .navlinks a:not(.btn){display:none}
+      .mobile-nav{display:flex;justify-content:space-around;gap:6px;border-top:1px solid var(--line);font-size:.8rem;font-weight:700}
+      .mobile-nav a{padding:8px 4px}
+      html{scroll-padding-top:114px}
+      .nav{min-height:62px}
+      .band{padding:58px 0}
+      .hero{padding:42px 0 54px}
+      .grid{gap:28px}
+    }
+    @media(max-width:660px){
+      .line-float{right:12px;bottom:12px}
+      .wrap{width:calc(100% - 32px)}
+      .grid,.metric-panel,.paths,.faq-layout{grid-template-columns:1fr}
+      .brand img{width:34px;height:34px}
+      .brand{font-size:.92rem}
+      .nav{gap:7px}
+      .nav .btn{min-height:39px;padding:5px 11px;font-size:.8rem}
+      .hero figure img{height:240px}
+      .band{padding:49px 0}
+      .metric-buttons{grid-template-columns:repeat(4,minmax(0,1fr))}
+      .metric-buttons button{font-size:.84rem}
+      .metric-panel img{height:min(76vw,330px)}
+      .metric-copy{min-height:181px}
+      .service img{max-height:380px}
+      .owner img{width:min(100%,320px)}
+      .visit-row{grid-template-columns:2.5em minmax(0,1fr);gap:8px}
+    }
+    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
   </style>
 </head>
-
 <body>
-
-  <script>
-    const CONTENT = {
-      brandName: "泡泡臉八德館",
-      pageTitle: "AI肌膚檢測",
-      lineJoinShort: "https://lin.ee/JIvLjaD",
-
-      heroTitle: "粉刺、毛孔、膚況不穩？先做一次 AI 肌膚檢測",
-      heroDesc: "很多人保養很努力卻一直沒感覺，原因常常不是不夠勤勞，而是方向一開始就錯了。AI 檢測＋白話解讀，讓你搞懂自己皮膚正在發生什麼，很多人當下第一句話就是：「原來是這樣。」",
-
-      lineOaId: "@191hkpbi",
-      lineMsgBook: "我要預約AI肌膚檢測",
-      lineMsgAsk: "我想先詢問我的膚況，想請你幫我看一下。",
-
-      phone: "0986239526",
-      address: "桃園市八德區廣興五街53號",
-      mapQuery: "桃園市八德區廣興五街53號",
-
-      facebookUrl: "https://www.facebook.com/share/1EQgh1Rr4Y/",
-      instagramUrl: "https://www.instagram.com/bubblan_53?igsh=OWY0dndxbHhseW11",
-
-      imgLogo: "images/logo.png",
-      imgStore: "images/store.jpg",
-      imgOwner: "images/owner.jpg",
-      imgDevice: "images/ai-device.jpg",
-      imgService: "images/ai-service.jpg",
-
-      checkupTime: "約 30 分鐘（檢測＋解讀）",
-      acneCareTime: "粉刺管理護理約 90 分鐘",
-
-      skinItems: [
-        { key: "水分", label: "水分" },
-        { key: "油脂", label: "油脂" },
-        { key: "毛孔", label: "毛孔" },
-        { key: "黑頭", label: "黑頭" },
-        { key: "痘痘", label: "痘痘" },
-        { key: "屏障", label: "屏障" },
-        { key: "淺層色素", label: "淺層色素" },
-        { key: "皺紋", label: "皺紋" }
-      ],
-
-      knowledge: {
-        "水分": "水分充足時，肌膚會看起來比較飽滿、細緻，也比較不容易乾燥或緊繃。若水分不足，常見狀況是乾燥、脫屑或保養吸收變差。",
-        "油脂": "油脂像皮膚表面的一層天然保護膜，可以幫助鎖住水分。油脂過多容易出現油光、粉刺；過少則可能乾燥、敏感。",
-        "毛孔": "毛孔是皮膚排出油脂與汗液的通道。當油脂分泌過多或膠原蛋白流失時，毛孔就會看起來比較明顯。",
-        "黑頭": "黑頭是毛孔裡的油脂與老廢角質接觸空氣氧化形成的黑點。常見在鼻子、額頭與下巴等油脂分泌較旺盛的部位。",
-        "痘痘": "痘痘通常是毛孔堵塞後，再加上細菌感染造成的發炎反應。若處理不當，可能留下痘印或痘疤。",
-        "屏障": "皮膚屏障是保護肌膚的第一道防線，負責鎖水與抵禦外界刺激。當屏障受損時，肌膚容易乾燥、泛紅或變得敏感。",
-        "淺層色素": "淺層色素常見為曬斑、痘印或色斑。多半與紫外線、發炎或作息不規律有關。",
-        "皺紋": "皺紋主要與膠原蛋白流失和皮膚彈性下降有關。一開始可能只是細紋，時間久了可能變成較深的紋路。"
-      }
-    };
-  </script>
-
-  <div class="float-line">
-    <a class="float-pill" id="floatLineBtn" href="#" target="_blank" rel="noopener">
-      <span>LINE 立即預約<br><small>點一下就能聊</small></span>
-    </a>
-  </div>
-
-  <div class="topbar">
-    <div class="wrap topbar-inner">
-      <div class="brand">
-        <img id="logoImg" alt="logo" loading="lazy" />
-      </div>
-
-      <nav class="nav">
-        <a href="#device">AI檢測</a>
-        <a href="#results">8項指標</a>
-        <a href="#solutions">改善路徑</a>
-        <a href="#owner">主理人</a>
-        <a href="#faq">FAQ</a>
-        <a class="btn btn-primary" href="#contact">立即預約</a>
+  <header class="mast">
+    <div class="wrap nav">
+      <a class="brand" href="#top"><img src="data:image/png;base64,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" alt="">泡泡臉八德館</a>
+      <nav class="navlinks" aria-label="頁面導覽">
+        <a href="#device">檢測流程</a><a href="#results">8 項指標</a><a href="#solutions">改善方向</a><a href="#owner">主理人</a><a href="#faq">FAQ</a><a class="btn" href="#contact">預約</a>
       </nav>
-
-      <a class="btn btn-line" id="topBookBtn" href="#" target="_blank" rel="noopener">加入LINE｜我要預約AI檢測</a>
     </div>
-  </div>
-
-  <header class="hero">
-    <div class="wrap hero-grid">
-      <div class="glass hero-left">
-        <div>
-          <div class="kicker">
-            <span class="dot"></span>
-            <span>八德在地｜肌膚管理 × AI檢測</span>
-            <span class="pill">以鮑曼博士 16 型邏輯整理</span>
-          </div>
-
-          <h1 id="heroTitle"></h1>
-          <p class="lead" id="heroDesc"></p>
-
-          <div class="micro">
-            <b>你不用懂專業</b>，你只要加入 LINE，直接傳：<code>我要預約AI肌膚檢測</code><br/>
-            我們會協助你安排時間。<span class="muted" id="timeText"></span>
-          </div>
-
-          <div class="hero-actions">
-            <a class="btn btn-line" id="heroBookBtn" href="#" target="_blank" rel="noopener">加入LINE｜我要預約AI檢測</a>
-            <a class="btn ghost" href="#results">我想先看看檢測內容</a>
-          </div>
-
-          <div class="badges">
-            <span class="badge" id="badgeTime"></span>
-            <span class="badge">✔ 先解釋膚況，不硬推</span>
-            <span class="badge">✔ 只挑最有感的 8 項，好懂好決策</span>
-          </div>
-        </div>
-
-        <div class="callout">
-          <b>我們很理解很多人怕被推銷。</b><br/>
-          檢測後會先把膚況講清楚，是否要做護理或保養，都由你決定。
-        </div>
-      </div>
-
-      <div class="stack">
-        <div class="media" title="店內環境">
-          <div class="media-box">
-            <img id="storeImg" alt="店內環境" loading="lazy" />
-          </div>
-        </div>
-
-        <div class="media" title="AI肌膚檢測儀">
-          <div class="media-box">
-            <img id="serviceImg" alt="AI肌膚檢測儀" loading="lazy" />
-          </div>
-        </div>
-
-        <div class="mini">
-          <strong>地點</strong>
-          <span id="miniAddress"></span>
-        </div>
-      </div>
-    </div>
+    <nav class="mobile-nav wrap" aria-label="手機版頁面導覽"><a href="#device">檢測流程</a><a href="#results">8 項指標</a><a href="#solutions">改善方向</a><a href="#owner">主理人</a><a href="#faq">FAQ</a></nav>
   </header>
-
-  <section id="device">
-    <div class="wrap">
-      <div class="section-title">
+  <main id="top">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="wrap grid">
         <div>
-          <h2>AI 肌膚檢測（約 30 分鐘）</h2>
-          <p>檢測只是第一步；重點是「解讀」。我們用白話把你的膚況講清楚，再用鮑曼博士 16 型的邏輯整理方向。</p>
-        </div>
-      </div>
-
-      <div class="split">
-        <div class="card">
-          <h3>你最在意的問題，通常落在這 8 項</h3>
-          <p class="muted">完整報告涵蓋更多指標，但你不需要背名詞；你只需要知道：你現在的膚況重點是什麼、下一步該怎麼做。</p>
-
-          <div class="steps" style="margin-top:12px">
-            <div class="step">
-              <div class="num">1</div>
-              <div>
-                <strong>檢測分析</strong>
-                <span>快速掌握目前膚況，找出你最該先處理的重點。</span>
-              </div>
-            </div>
-            <div class="step">
-              <div class="num">2</div>
-              <div>
-                <strong>白話解讀</strong>
-                <span>你只會問「這是什麼意思？」我們就把它講到你聽得懂。</span>
-              </div>
-            </div>
-            <div class="step">
-              <div class="num">3</div>
-              <div>
-                <strong>下一步方向（可自由選擇）</strong>
-                <span>你不需要當下決定。我們先講清楚，你再決定要不要做任何安排。</span>
-              </div>
-            </div>
-          </div>
-
-          <div style="margin-top:14px; display:flex; gap:10px; flex-wrap:wrap;">
-            <a class="btn btn-line" id="deviceBookBtn" href="#" target="_blank" rel="noopener">加入LINE｜我要預約AI檢測</a>
-            <a class="btn ghost" href="#faq">我想先看常見問題</a>
+          <p class="eyebrow">桃園八德｜預約制肌膚管理</p>
+          <h1 id="hero-title">AI 肌膚檢測<span>先看懂自己的膚況</span></h1>
+          <p class="lead">在意粉刺、毛孔，或覺得膚況不太穩定？約 30 分鐘完成檢測與白話解讀，找出保養可以先從哪裡開始。</p>
+          <div class="price"><span>原價 <strong>NT$588</strong>／人</span><b>三人同行一人免費</b></div>
+          <div class="actions">
+            <a class="btn" data-line="book" href="https://lin.ee/JIvLjaD" target="_blank" rel="noopener">LINE 預約</a>
+            <a class="btn outline" href="#results">看看 8 項檢測</a>
           </div>
         </div>
-
-        <div class="media">
-          <div class="media-box" id="deviceImgBox">
-            <img id="deviceImg" alt="AI肌膚檢測服務情境" loading="lazy" />
-          </div>
-        </div>
+        <figure><img src="images/ai-device.jpg" alt="泡泡臉八德館的 AI 肌膚檢測儀與顯示螢幕" width="1000" height="1000"><figcaption>泡泡臉八德館使用的 AI 肌膚檢測儀</figcaption></figure>
       </div>
-
-      <div style="margin-top:14px" class="callout">
-        <b>定位很簡單：</b>先分析、先講清楚、再決定。<br/>
-        你可以只做檢測了解膚況，也可以再評估要不要做護理或居家保養。
-      </div>
-    </div>
-  </section>
-
-  <section id="results">
-    <div class="wrap">
-      <div class="section-title">
+    </section>
+    <section id="device" class="band">
+      <div class="wrap grid">
         <div>
-          <h2>前台只放最有感的 8 項（好懂、好決策）</h2>
-          <p>點選檢測項目即可切換</p>
+          <p class="eyebrow">檢測流程｜約 30 分鐘</p>
+          <h2>從拍攝到解讀，三個步驟</h2>
+          <ol class="steps">
+            <li><b>01</b><div><strong>檢測分析</strong><span>拍攝肌膚影像，查看水分、油脂、毛孔等指標。</span></div></li>
+            <li><b>02</b><div><strong>白話解讀</strong><span>一起看影像，參考鮑曼博士 16 型膚質邏輯整理重點。</span></div></li>
+            <li><b>03</b><div><strong>整理保養方向</strong><span>挑出可以先做的事，妳也可以只做檢測。</span></div></li>
+          </ol>
+        </div>
+        <figure class="service"><img src="images/ai-service.jpg" alt="主理人操作 AI 肌膚檢測設備，為顧客拍攝肌膚影像" loading="lazy"><figcaption>真人操作實拍</figcaption></figure>
+      </div>
+    </section>
+    <section id="results" class="band tinted">
+      <div class="wrap">
+        <div class="section-heading"><p class="eyebrow">檢測圖與肌膚小知識</p><h2>看看 AI 能分析哪些膚況</h2><p class="lead">點選 8 項常見指標，切換真人檢測圖和小知識。</p></div>
+        <div class="metric-buttons" id="metric-buttons" role="group" aria-label="選擇檢測指標"></div>
+        <div class="metric-panel" id="metric-panel">
+          <figure><img id="metric-image" src="images/%E6%B0%B4%E5%88%86.jpg" alt="水分真人測試圖" width="1920" height="2560" loading="lazy"><figcaption>真人測試圖</figcaption></figure>
+          <div class="metric-copy" aria-live="polite"><p class="eyebrow" id="metric-index">01 / 08　肌膚小知識</p><h3 id="metric-title">水分</h3><p class="lead" id="metric-note">水分不足時，肌膚容易乾燥、緊繃或脫屑。</p></div>
         </div>
       </div>
-
-      <div class="split">
-        <div class="panel">
-          <div class="panel-head">
-            <div>
-              <h3>點選檢測項目</h3>
-            </div>
-          </div>
-
-          <div class="chips" id="skinChips"></div>
-
-          <div class="knowledge-box">
-            <h4 id="knowledgeTitle">肌膚小知識｜水分</h4>
-            <p id="knowledgeText"></p>
-          </div>
-
-          <div style="margin-top:14px; display:flex; gap:10px; flex-wrap:wrap;">
-            <a class="btn btn-line" id="resultsBookBtn" href="#" target="_blank" rel="noopener">加入LINE｜我要預約AI檢測</a>
-            <a class="btn ghost" href="#solutions">我想看改善路徑</a>
-          </div>
-        </div>
-
-        <div class="panel">
-          <div class="panel-head">
-            <div>
-              <h3 id="currentMetricTitle">水分</h3>
-              <p id="currentMetricHint">（真人測試圖）</p>
-            </div>
-          </div>
-
-          <div class="media">
-            <div class="media-box">
-              <img id="metricImg" alt="檢測示意圖" loading="lazy" />
-            </div>
-          </div>
-
-          <div class="img-caption" id="metricCaption">
-            透過真人測試圖，可以更清楚了解目前肌膚狀況，幫助理解檢測結果與後續保養方向。
-          </div>
+    </section>
+    <section id="solutions" class="band">
+      <div class="wrap">
+        <div class="section-heading"><p class="eyebrow">檢測之後</p><h2>選一個適合妳的保養方向</h2></div>
+        <div class="paths">
+          <article class="path">
+            <h3>店內護膚管理</h3>
+            <ul><li>粉刺與毛孔管理（約 90 分鐘）</li><li>基礎保濕與膚質調理</li><li>修護與膠原管理</li></ul>
+            <a class="btn outline" href="https://bubblan.tw/#services" target="_blank" rel="noopener">查看官網護膚項目 ↗</a>
+          </article>
+          <article class="path"><h3>居家保養</h3><p class="lead">依膚況調整清潔、保濕、修護與防曬。先挑一兩項做起，有需要再詢問產品。</p></article>
         </div>
       </div>
-    </div>
-  </section>
-
-  <section id="solutions">
-    <div class="wrap">
-      <div class="section-title">
+    </section>
+    <section id="owner" class="band tinted">
+      <div class="wrap grid">
+        <figure class="owner"><img src="images/owner.jpg" alt="泡泡臉八德館主理人" width="2756" height="2504" loading="lazy"></figure>
+        <div><p class="eyebrow">泡泡臉八德館｜主理人</p><h2>陪妳一起看懂檢測結果</h2><p class="lead">我會依妳的檢測結果，把在意的膚況和接下來可以做的事講清楚。護膚或居家保養，都可以照自己的步調安排。</p><p class="qualification">國家證照／肌膚管理認證</p></div>
+      </div>
+    </section>
+    <section id="faq" class="band">
+      <div class="wrap faq-layout">
+        <div><p class="eyebrow">FAQ</p><h2>第一次檢測前</h2></div>
         <div>
-          <h2>依檢測結果，提供兩條改善路徑</h2>
-          <p>你可以只做檢測了解膚況，也可以依需求選擇店內護膚或居家保養方向。是否要做，由你決定。</p>
+          <details><summary>AI 肌膚檢測費用怎麼算？</summary><p>原價 NT$588／人。三人同行一人免費。若檢測後當日安排店內護膚課程，檢測可享 NT$100 的優惠方式，詳情可透過 LINE 詢問。</p></details>
+          <details><summary>檢測大約需要多久？</summary><p>約 30 分鐘，包含檢測與解讀。</p></details>
+          <details><summary>檢測後一定要做護膚或買產品嗎？</summary><p>可以只做檢測。了解膚況後，再依妳的需求決定下一步。</p></details>
+          <details><summary>我需要先了解鮑曼博士 16 型嗎？</summary><p>可以直接來檢測。主理人會用白話解釋膚質分類與保養方向。</p></details>
+          <details><summary>粉刺管理大概多久？會不會痛？</summary><p>約 90 分鐘。感受因人而異，會依當天膚況與妳能接受的程度調整。</p></details>
+          <details><summary>怎麼預約最快？</summary><p>加入 LINE 後傳「我要預約AI肌膚檢測」，再附上希望的日期與時段。</p></details>
         </div>
       </div>
-
-      <div class="split">
-        <div class="card">
-          <h3>店內護膚管理（3 大方向）</h3>
-          <p class="muted">我們不在網頁上列「完整課程表」，避免你還沒了解膚況就被迫選擇。到店後會依檢測結果建議方向。</p>
-
-          <div class="steps" style="margin-top:12px">
-            <div class="step">
-              <div class="num">A</div>
-              <div>
-                <strong>粉刺與毛孔管理</strong>
-                <span>黑頭粉刺 / 毛孔堵塞 / 油脂分泌不平衡。<br/><b>（粉刺管理護理約 90 分鐘）</b></span>
-              </div>
-            </div>
-            <div class="step">
-              <div class="num">B</div>
-              <div>
-                <strong>基礎保濕與膚質調理</strong>
-                <span>乾燥緊繃 / 保養吸收差 / 膚質粗糙，先把底子打穩。</span>
-              </div>
-            </div>
-            <div class="step">
-              <div class="num">C</div>
-              <div>
-                <strong>修護與膠原管理</strong>
-                <span>膚況疲勞 / 細紋 / 想要更穩更亮更有彈性。</span>
-              </div>
-            </div>
-          </div>
-
-          <div style="margin-top:14px; display:flex; gap:10px; flex-wrap:wrap;">
-            <a class="btn btn-line" id="solutionsAskBtn" href="#" target="_blank" rel="noopener">加入LINE｜我想先問一下</a>
-            <a class="btn ghost" href="#owner">我想看主理人介紹</a>
-          </div>
+    </section>
+    <section id="contact" class="band tinted">
+      <div class="wrap grid booking">
+        <div class="booking-intro"><p class="eyebrow">預約 AI 肌膚檢測</p><h2>想檢測，或想先問問？</h2><p class="lead">從 LINE 告訴我們妳想了解的膚況，或傳想預約的時段。</p>
+          <div class="actions"><a class="btn" data-line="book" href="https://lin.ee/JIvLjaD" target="_blank" rel="noopener">LINE 預約</a><a class="btn outline" data-line="ask" href="https://lin.ee/JIvLjaD" target="_blank" rel="noopener">我想先問一下</a></div>
         </div>
-
-        <div class="card">
-          <h3>居家保養（方向建議）</h3>
-          <p>很多人最怕被推產品，所以我們先說清楚：<b>居家保養是做對關鍵步驟</b>，不是買越多越好。</p>
-
-          <div class="steps" style="margin-top:12px">
-            <div class="step">
-              <div class="num">1</div>
-              <div>
-                <strong>把關鍵步驟做對</strong>
-                <span>清潔 / 保濕 / 修護 / 防曬，依膚況調整比例與順序。</span>
-              </div>
-            </div>
-            <div class="step">
-              <div class="num">2</div>
-              <div>
-                <strong>少而精</strong>
-                <span>依檢測結果給你「最需要先做的 1–2 件事」，不要讓保養變成壓力。</span>
-              </div>
-            </div>
-            <div class="step">
-              <div class="num">3</div>
-              <div>
-                <strong>需要才提供產品</strong>
-                <span>如果你需要，我們也有代理產品可協助，但<b>不是必買</b>。</span>
-              </div>
-            </div>
+        <article class="visit" aria-labelledby="visit-title">
+          <h3 id="visit-title">來店資訊</h3>
+          <dl class="visit-list">
+            <div class="visit-row"><dt>店名</dt><dd>泡泡臉八德館</dd></div>
+            <div class="visit-row"><dt>地址</dt><dd>桃園市八德區廣興五街53號</dd></div>
+            <div class="visit-row"><dt>時間</dt><dd>週六公休｜其餘時間採預約制</dd></div>
+            <div class="visit-row"><dt>電話</dt><dd><a href="tel:0986239526">0986-239-526</a></dd></div>
+          </dl>
+          <div class="actions">
+            <a class="btn" href="https://www.google.com/maps/search/?api=1&amp;query=%E6%A1%83%E5%9C%92%E5%B8%82%E5%85%AB%E5%BE%B7%E5%8D%80%E5%BB%A3%E8%88%88%E4%BA%94%E8%A1%9753%E8%99%9F" target="_blank" rel="noopener">Google Maps 導航</a>
+            <a class="btn outline" href="https://bubblan.tw/" target="_blank" rel="noopener">回到官網 <span aria-hidden="true">↗</span></a>
           </div>
-
-          <div style="margin-top:14px" class="callout">
-            <b>你可以只做檢測</b>，拿到方向後回家自己執行也可以。<br/>
-            我們做的是「讓你弄懂」，不是「逼你買」。
-          </div>
-        </div>
+        </article>
       </div>
-    </div>
-  </section>
-
-  <section id="owner">
+    </section>
+  </main>
+  <footer class="foot">
     <div class="wrap">
-      <div class="section-title">
-        <div>
-          <h2>主理人｜泡泡臉八德館</h2>
-          <p>你要的不是聽一堆專業名詞，而是有人把膚況講清楚、做起來安心。</p>
-        </div>
-      </div>
-
-      <div class="split">
-        <div class="media">
-          <div class="media-box">
-            <img id="ownerImg" alt="泡泡臉八德館 主理人" loading="lazy" />
-          </div>
-        </div>
-
-        <div class="card">
-          <h3>信任感來自：有依據＋不施壓</h3>
-          <p>我們以 AI 檢測結果為依據，並用鮑曼博士 16 型膚質邏輯整理方向。很多人做完檢測說「原來是這樣」，因為終於有人把膚況講清楚。</p>
-
-          <div class="chips" style="margin-top:12px">
-            <span class="chip" style="cursor:default"><i></i>國家證照／肌膚管理認證</span>
-            <span class="chip" style="cursor:default"><i></i>檢測結果為依據</span>
-            <span class="chip" style="cursor:default"><i></i>不硬推・先講清楚</span>
-          </div>
-
-          <div class="callout" style="margin-top:12px">
-            <b>我們很理解很多人怕被推銷。</b><br/>
-            檢測後會先解釋膚況與改善方向，是否要做護理或保養，都由你決定。
-          </div>
-
-          <div style="margin-top:14px; display:flex; gap:10px; flex-wrap:wrap;">
-            <a class="btn btn-line" id="ownerAskBtn" href="#" target="_blank" rel="noopener">加入LINE｜我想先問一下</a>
-            <a class="btn ghost" href="#contact">我想直接看聯絡方式</a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section id="faq">
-    <div class="wrap">
-      <div class="section-title">
-        <div>
-          <h2>FAQ｜你可能會想問</h2>
-          <p>我們把最常見的疑慮先講清楚，讓你更安心預約。</p>
-        </div>
-      </div>
-
-      <div class="faq">
-        <details>
-          <summary>AI 肌膚檢測需要多久？</summary>
-          <p>約 30 分鐘，包含檢測與白話解讀，讓你知道目前膚況重點與下一步方向。</p>
-        </details>
-
-        <details>
-          <summary>檢測後一定要做護膚課程或買產品嗎？</summary>
-          <p>不一定。你可以只做檢測了解膚況，我們會先把膚況講清楚，你再決定要不要安排任何下一步。</p>
-        </details>
-
-        <details>
-          <summary>鮑曼博士 16 型是什麼？我需要懂嗎？</summary>
-          <p>你不需要懂。你只要知道：我們會用這套邏輯把結果整理成你聽得懂的「改善方向」，避免越保養越亂。</p>
-        </details>
-
-        <details>
-          <summary>AI 肌膚檢測費用怎麼算？</summary>
-          <p>
-            原價為 <b>NT$588 / 人</b>。<br/>
-            <b>三人同行一人免費</b>（等於兩人付費、第三人免費）。<br/>
-            若檢測後當日有安排店內護膚課程，檢測可享 <b>NT$100</b> 的優惠方式（可在 LINE 由我們協助說明最適合你的方案）。
-          </p>
-        </details>
-
-        <details>
-          <summary>粉刺管理大概多久？會不會很痛？</summary>
-          <p>粉刺管理護理約 90 分鐘，會依膚況安排清潔、粉刺處理與修護。疼痛感因人而異，我們會以「能接受、能持續」為原則調整方式。</p>
-        </details>
-
-        <details>
-          <summary>我想預約，要怎麼說最快？</summary>
-          <p>
-            加入 LINE 後直接傳：<b>「我要預約AI肌膚檢測」</b><br/>
-            再補一句：<b>希望時段：＿＿＿＿（舉例 星期一下午2點）</b>，我們就能很快幫你安排。
-          </p>
-        </details>
-      </div>
-    </div>
-  </section>
-
-  <section id="contact">
-    <div class="wrap">
-      <div class="section-title">
-        <div>
-          <h2>立即預約</h2>
-          <p>最快方式：加入官方 LINE。你也可以直接來電，或先追蹤社群了解我們。</p>
-        </div>
-      </div>
-
-      <div class="contact-card">
-        <div class="contact-left">
-          <h3 style="margin:0 0 6px;">泡泡臉八德館｜聯絡資訊</h3>
-
-          <div class="kv">
-            <div><i>📍</i><span id="addrText"></span></div>
-            <div><i>☎️</i><span id="phoneText"></span></div>
-            <div><i>💬</i><span>官方 LINE：點按鈕加入（詳細資訊於官方LINE內）</span></div>
-          </div>
-
-          <div style="margin-top:14px; display:flex; gap:10px; flex-wrap:wrap;">
-            <a class="btn btn-line" id="contactBookBtn" href="#" target="_blank" rel="noopener">加入LINE｜我要預約AI檢測</a>
-            <a class="btn ghost" id="mapBtn" href="#" target="_blank" rel="noopener">打開地圖導航</a>
-          </div>
-
-          <p class="hint">＊你也可以先「詢問」再預約：頁面中的「我想先問一下」就是給你用的。</p>
-        </div>
-
-        <div class="contact-right">
-          <h3 style="margin:0 0 8px;">追蹤泡泡臉八德館</h3>
-          <p class="muted" style="margin:0 0 10px;">
-            想先看看我們平常的護膚分享與店內內容嗎？歡迎追蹤我們的社群（你會更安心，也更了解我們的風格）。
-          </p>
-
-          <div class="social">
-            <a class="btn btn-fb" id="fbBtn" href="#" target="_blank" rel="noopener">追蹤 Facebook 粉絲專頁</a>
-            <a class="btn btn-ig" id="igBtn" href="#" target="_blank" rel="noopener">追蹤 Instagram（@bubblan_53）</a>
-          </div>
-
-          <div class="callout" style="margin-top:12px;">
-            <b>看完再來問也可以。</b><br/>
-            你若只是想先了解膚況方向，點「我想先問一下」就好，我們會先解釋，不會逼你買。
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <footer>
-    <div class="wrap">
-      <div style="display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap;">
-        <div>
-          <b id="footerBrand"></b>
-          <div class="muted" style="margin-top:6px;" id="footerAddr"></div>
-          <div class="muted" id="footerPhone"></div>
-        </div>
-        <div class="muted">
-          © <span id="year"></span> BubbleFace. All rights reserved.
-        </div>
-      </div>
+      <p>© <span id="year"></span> 泡泡臉八德館</p>
+      <p class="info-note"><strong>資訊提醒｜網站價格、活動與服務內容會不定期更新；如網站資訊尚未同步，請以現場最新公告與實際提供內容為準。</strong></p>
     </div>
   </footer>
-
+  <a class="line-float" href="https://lin.ee/JIvLjaD" target="_blank" rel="noopener" aria-label="加入官方 LINE">
+    <span class="bubble" aria-hidden="true">LINE</span>
+    <span>預約／詢問<small>加入官方 LINE</small></span>
+  </a>
   <script>
-    const setText = (id, text) => { const el=document.getElementById(id); if(el) el.textContent=text; };
-    const setImg  = (id, src)  => { const el=document.getElementById(id); if(el) el.src=src; };
-
-    function lineOaMessageLink(oaId, message){
-      return `https://line.me/R/oaMessage/${encodeURIComponent(oaId)}/?${encodeURIComponent(message)}`;
-    }
-    const LINK_BOOK_PREFILL = lineOaMessageLink(CONTENT.lineOaId, CONTENT.lineMsgBook);
-    const LINK_ASK_PREFILL  = lineOaMessageLink(CONTENT.lineOaId, CONTENT.lineMsgAsk);
-
-    const isMobile = /Android|iPhone|iPad|iPod|Windows Phone/i.test(navigator.userAgent);
-    const LINK_BOOK_FINAL = isMobile ? LINK_BOOK_PREFILL : CONTENT.lineJoinShort;
-    const LINK_ASK_FINAL  = isMobile ? LINK_ASK_PREFILL  : CONTENT.lineJoinShort;
-
-    document.title = `${CONTENT.brandName}｜${CONTENT.pageTitle}`;
-    setText("heroTitle", CONTENT.heroTitle);
-    setText("heroDesc", CONTENT.heroDesc);
-    setText("miniAddress", CONTENT.address);
-    setText("addrText", CONTENT.address);
-    setText("phoneText", CONTENT.phone);
-
-    setImg("logoImg", CONTENT.imgLogo);
-    setImg("storeImg", CONTENT.imgStore);
-    setImg("serviceImg", CONTENT.imgDevice);
-    setImg("ownerImg", CONTENT.imgOwner);
-    setImg("deviceImg", CONTENT.imgService);
-
-    setText("footerBrand", CONTENT.brandName);
-    setText("footerAddr", CONTENT.address);
-    setText("footerPhone", `預約專線：${CONTENT.phone}`);
-    setText("year", String(new Date().getFullYear()));
-
-    setText("timeText", `（${CONTENT.checkupTime}）`);
-    setText("badgeTime", `✔ ${CONTENT.checkupTime}`);
-
-    ["floatLineBtn","topBookBtn","heroBookBtn","deviceBookBtn","resultsBookBtn","contactBookBtn"]
-      .forEach(id => { const el=document.getElementById(id); if(el) el.href = LINK_BOOK_FINAL; });
-
-    ["ownerAskBtn","solutionsAskBtn"]
-      .forEach(id => { const el=document.getElementById(id); if(el) el.href = LINK_ASK_FINAL; });
-
-    const fbBtn = document.getElementById("fbBtn");
-    const igBtn = document.getElementById("igBtn");
-    if(fbBtn) fbBtn.href = CONTENT.facebookUrl;
-    if(igBtn) igBtn.href = CONTENT.instagramUrl;
-
-    const map = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(CONTENT.mapQuery)}`;
-    const mapBtn = document.getElementById("mapBtn");
-    if(mapBtn) mapBtn.href = map;
-
-    document.querySelectorAll('a[href^="#"]').forEach(a=>{
-      a.addEventListener("click", (e)=>{
-        const href = a.getAttribute("href");
-        if(href && href.length>1){
-          const target = document.querySelector(href);
-          if(target){
-            e.preventDefault();
-            target.scrollIntoView({behavior:"smooth", block:"start"});
-          }
-        }
-      });
+    const metrics = [
+      ["水分", "水分不足時，肌膚容易乾燥、緊繃或脫屑。", "images/%E6%B0%B4%E5%88%86.jpg"],
+      ["油脂", "皮脂有助於留住水分。皮脂較多的部位容易泛油光，皮脂較少的部位則可能偏乾。", "images/%E6%B2%B9%E8%84%82.jpg"],
+      ["毛孔", "毛孔的外觀會隨油脂分泌及肌膚彈性而改變。", "images/%E6%AF%9B%E5%AD%94.jpg"],
+      ["黑頭", "黑頭是毛孔內的堆積物接觸空氣後顏色變深，常見於鼻頭和下巴。", "images/%E9%BB%91%E9%A0%AD.jpg"],
+      ["痘痘", "毛孔堵塞和發炎都和痘痘有關，有時痘痘消退後會留下痘印。", "images/%E7%97%98%E7%97%98.jpg"],
+      ["屏障", "肌膚屏障有助於留住水分、減少外界刺激。屏障狀態不穩時，容易乾燥或泛紅。", "images/%E5%B1%8F%E9%9A%9C.jpg"],
+      ["淺層色素", "曬斑和部分痘印是常見的色素表現，日曬或發炎後都可能出現。", "images/%E6%B7%BA%E5%B1%A4%E8%89%B2%E7%B4%A0.jpg"],
+      ["皺紋", "肌膚彈性隨時間改變，細紋或較深的紋路也可能逐漸變明顯。", "images/%E7%9A%BA%E7%B4%8B.jpg"]
+    ];
+    const group = document.getElementById("metric-buttons");
+    const metricImage = document.getElementById("metric-image");
+    const metricIndex = document.getElementById("metric-index");
+    const metricTitle = document.getElementById("metric-title");
+    const metricNote = document.getElementById("metric-note");
+    const buttons = metrics.map(([name], index) => {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.textContent = name;
+      button.setAttribute("aria-controls", "metric-panel");
+      button.setAttribute("aria-pressed", String(index === 0));
+      button.addEventListener("click", () => selectMetric(index));
+      group.append(button);
+      return button;
     });
-
-    const chipsWrap = document.getElementById("skinChips");
-    const metricImg = document.getElementById("metricImg");
-    const metricTitle = document.getElementById("currentMetricTitle");
-    const metricHint = document.getElementById("currentMetricHint");
-    const knowledgeTitle = document.getElementById("knowledgeTitle");
-    const knowledgeText = document.getElementById("knowledgeText");
-
-    function metricImagePath(key){
-      return `images/${key}.jpg`;
+    function selectMetric(index) {
+      const [name, note, source] = metrics[index];
+      metricImage.src = source;
+      metricImage.alt = name + "真人測試圖";
+      metricIndex.textContent = String(index + 1).padStart(2, "0") + " / 08　肌膚小知識";
+      metricTitle.textContent = name;
+      metricNote.textContent = note;
+      buttons.forEach((button, position) => button.setAttribute("aria-pressed", String(index === position)));
     }
-
-    function setMetric(key){
-      metricTitle.textContent = key;
-      metricHint.textContent = "（真人測試圖）";
-      metricImg.src = metricImagePath(key);
-      metricImg.alt = `${key} 真人測試圖`;
-
-      knowledgeTitle.textContent = `肌膚小知識｜${key}`;
-      knowledgeText.textContent = CONTENT.knowledge[key] || "";
-
-      document.querySelectorAll(".chip[data-key]").forEach(btn=>{
-        btn.classList.toggle("active", btn.dataset.key === key);
+    const mobile = /Android|iPhone|iPad|iPod|Windows Phone/i.test(navigator.userAgent);
+    const lineMessages = { book: "我要預約AI肌膚檢測", ask: "我想先詢問我的膚況，想請你幫我看一下。" };
+    if (mobile) {
+      document.querySelectorAll("[data-line]").forEach(link => {
+        link.href = "https://line.me/R/oaMessage/" + encodeURIComponent("@191hkpbi") + "/?" + encodeURIComponent(lineMessages[link.dataset.line]);
       });
     }
-
-    CONTENT.skinItems.forEach((item)=>{
-      const btn = document.createElement("button");
-      btn.type = "button";
-      btn.className = "chip";
-      btn.dataset.key = item.key;
-      btn.innerHTML = `<i></i>${item.label}`;
-      btn.addEventListener("click", ()=> setMetric(item.key));
-      chipsWrap.appendChild(btn);
-    });
-
-    setMetric(CONTENT.skinItems[0].key);
-
-    function setFallback(imgEl, label){
-      imgEl.onerror = () => {
-        imgEl.removeAttribute("src");
-        imgEl.alt = `${label}（尚未放入圖片）`;
-        imgEl.style.background = "rgba(255,255,255,.55)";
-        imgEl.style.display = "block";
-      };
-    }
-    setFallback(metricImg, "此項目");
-    setFallback(document.getElementById("storeImg"), "店內照片");
-    setFallback(document.getElementById("serviceImg"), "設備照片");
-    setFallback(document.getElementById("ownerImg"), "主理人照片");
-    setFallback(document.getElementById("deviceImg"), "服務情境照片");
-    setFallback(document.getElementById("logoImg"), "Logo");
-
-    /* ai-service 自動判斷直式/橫式 */
-    const deviceImg = document.getElementById("deviceImg");
-    const deviceImgBox = document.getElementById("deviceImgBox");
-
-    function applyServiceImageRatio(){
-      if (!deviceImg || !deviceImg.naturalWidth || !deviceImg.naturalHeight) return;
-      const isPortrait = deviceImg.naturalHeight > deviceImg.naturalWidth;
-
-      deviceImgBox.classList.remove("service-portrait", "service-landscape");
-      if (isPortrait) {
-        deviceImgBox.classList.add("service-portrait");
-      } else {
-        deviceImgBox.classList.add("service-landscape");
-      }
-    }
-
-    deviceImg.addEventListener("load", applyServiceImageRatio);
+    document.getElementById("year").textContent = new Date().getFullYear();
   </script>
-
 </body>
 </html>
